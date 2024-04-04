@@ -46,22 +46,34 @@
         // c.open() 
         // console.log(c.isOpen)
         window.onload=function(){
+            function getColor(){
+                let colors=["red","blue"]
+                return colors[ Math.ceil(Math.random()*100)%colors.length]
+            }
             function makeCircle(root){
                 let div=document.createElement("div")
                 div.classList.add("circle")
                 root.appendChild(div)
                 return{
                     isOpen:false,
-                    color:"red",
-                    div
+                    color:getColor(),
+                    div,
+                    toggle(){
+                        this.isOpen=!this.isOpen
+                        this.div.style.backgroundColor=this.isOpen?this.color:"brown"
+                    }
                 }
             }
             let circleBox=document.querySelector(".circle-box")
             // let c=makeCircle()
             // circleBox
+            let circles=[]
             for(let i=0;i<10;i++){
-                makeCircle(circleBox)
+                let c=makeCircle(circleBox)
+                c.toggle()
+                circles.push(c)
             }
+            setTimeout(()=>circles.forEach(c=>c.toggle()),1000)
         }
     </script>
 </body>
