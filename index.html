@@ -5,13 +5,126 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        .circle-box{
+            display: grid;
+            grid-template-columns: repeat(5,1fr);
+            gap: 1.5rem;
+        }
+        h1{
+            text-align: center;
+        }
+        .points{
+            text-align: right;
+        }
+        .circle{
+            border: 2px solid black;
+            border-radius: 50%;
+            aspect-ratio: 1/1;
+            width: 100%;
+        }
+        .flex {
+            display: flex;
+            justify-content: space-between;
+        }
+    </style>
 </head>
 <body>
-    <p>hello world</p>
-    <p>created new branch</p>
-    <p>Change made by Sneha</p>
-    <p>this edited by srujan</p>
+    <div class="container">
+        <h1>Memory Game</h1>
+        <div class="main">
+            <div class="flex">
+                <h2 class="question"></h2>
+                <h2 class="points">pts:</h2>
+            </div>
+            <div class="circle-box"></div>
+        </div>
+    </div>
     
+    <script>
+        // let c={
+        //     width:200,
+        //     height:200,
+        //     isOpen:false,
+        //     open(){
+        //         this.isOpen=true
+        //     }
+        // }
+        // c.open() 
+        // console.log(c.isOpen)
+        window.onload=function(){
+            function getRandomCircle(circles){
+                return circles[ Math.ceil(Math.random()*100)%circles.length]
+            }
+            function getColor(){
+                let colors=["red","blue"]
+                return colors[ Math.ceil(Math.random()*100)%colors.length]
+            }
+            function makeCircle(root){
+                let div=document.createElement("div")
+                div.classList.add("circle")
+                root.appendChild(div)
+                return{
+                    isOpen:false,
+                    color:getColor(),
+                    div,
+                    toggle(){
+                        this.isOpen=!this.isOpen
+                        this.div.style.backgroundColor=this.isOpen?this.color:"brown"
+                    }
+                }
+            }
+            let circleBox=document.querySelector(".circle-box")
+            // let c=makeCircle()
+            // circleBox
+            let circles=[]
+            for(let i=0;i<10;i++){
+                let c=makeCircle(circleBox)
+                c.toggle()
+                c.div.onclick=handler
+                circles.push(c)
+            }
+            setTimeout(()=>circles.forEach(c=>c.toggle(),showQuestion()),1000)
 
+            let currentCircle=getRandomCircle(circles)
+            let questionColor=currentCircle.color
+            let count=circles.filter(c=>c.color==questionColor).length
+            let circlesClicked=0
+            let questionBox=document.querySelector(".question")
+            function showQuestion() {
+                questionBox.textContent=`Choose circle with color ${questionColor}`
+            }
+            
+            // setTimeout(()=>{
+            //     c.toggle();
+            //     showQuestion()
+            // },2000)
+            function getCircleFromDomObj(domObj,circles) {
+                return circles.filter(c=>c.div==domObj)[0]
+            }
+            function handler(e){
+                let c=getCircleFromDomObj(e.target,circles)
+                if (c.color!=questionColor){
+                    circles.forEach(c=>{
+                        circles.forEach(c=>(!c.isOpen?c.toggle():null))
+                        questionBox.textContent="You Lose!!"
+                        return
+                    })
+                }
+                if (!c.isOpen) {
+                    c.toggle()
+                    circlesClicked++
+                    console.log(circlesClicked)
+                    if (circlesClicked==count) {
+                        questionBox.textContent="You Win!!"
+                        circles.forEach(c=>(!c.isOpen?c.toggle():null))
+                    }
+                }
+                // console.log(c.color)
+                // console.log(c)
+            }
+
+        }
+    </script>
 </body>
 </html>
