@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -23,9 +24,9 @@
             aspect-ratio: 1/1;
             width: 100%;
         }
-        .flex{
-            justify-content: space-between;
+        .flex {
             display: flex;
+            justify-content: space-between;
         }
     </style>
 </head>
@@ -54,10 +55,6 @@
         // c.open() 
         // console.log(c.isOpen)
         window.onload=function(){
-            function getRandomCircle(circles){
-                // let colors=["red","blue"]
-                return circles[ Math.ceil(Math.random()*100)%circles.length]
-            }
             function getColor(){
                 let colors=["red","blue"]
                 return colors[ Math.ceil(Math.random()*100)%colors.length]
@@ -86,30 +83,8 @@
                 c.div.onclick=handler
                 circles.push(c)
             }
-            setTimeout(()=>{circles.forEach(c=>c.toggle()),showColor()},1000)
-            
-            
-                function showColor(){let currentCircle=getRandomCircle(circles)
-                    let questionColor=currentCircle.color
-                    let questionBox=document.querySelector(".question")
-                    questionBox.textContent=`check circle with color ${questionColor}`}
-                function getCircleFromDomObj(domobj,circles){
-                    return circles.filter(c=>c.div==domobj)[0]
-        
-                }
-                function handler(e){
-                    let c=getCircleFromDomObj(e.target,circles)
-                    console.log(c.color)
-                
-                if(c.color !=questionColor){
-                    circles.forEach(c=>(!c.isOpen?c.toggle():null))
-                    questionBox.textContent="you loose"
-
-                }
-            if(!c.isOpen){
-                c.toggle()
-            }}
-            }
+            setTimeout(()=>circles.forEach(c=>c.toggle()),1000)
+        }
     </script>
 </body>
 </html>
